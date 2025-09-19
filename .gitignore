@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+ui/dist/
+data/incoming/
+data/runs/
+data/evidence_packs/
+.env
+ParentAgent/
+alchemical_formulas/
+data/dump/
+*.sdf
+*.crdownload

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset='utf-8'/>
+  <meta name='viewport' content='width=device-width, initial-scale=1'/>
+  <title>TEC_Q5EP Capture</title>
+</head>
+<body>
+  <main>
+    <h1>Resonance Evidence Capture</h1>
+    <form id='captureForm'>
+      <label for="photo">Photo</label>
+      <input type='file' id='photo' accept='image/*' aria-label="Photo" />
+      <label for="note">Note</label>
+      <textarea id='note' placeholder='What happened?' aria-label="Note"></textarea>
+      <label for="tags">Tags (comma‑separated)</label>
+      <input type='text' id='tags' placeholder='synchronicity, ritual' aria-label='Tags' />
+      <label>
+        <input type='checkbox' id='consent' /> I consent to store anonymized evidence
+      </label>
+      <button type='button' id='gpsBtn'>Attach GPS</button>
+      <input type='hidden' id='gps' />
+      <button type='submit'>Submit</button>
+    </form>
+    <pre id='status'></pre>
+
+    <section>
+      <h2>Recent Runs</h2>
+      <ul id='runs'></ul>
+    </section>
+  </main>
+  <script type="module" src="/main.ts"></script>
+</body>
+</html>

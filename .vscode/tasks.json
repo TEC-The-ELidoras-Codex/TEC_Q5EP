@@ -6,7 +6,20 @@
       "type": "shell",
       "command": "${workspaceFolder}/.venv/Scripts/python.exe",
       "args": ["-m", "uvicorn", "server.app:app", "--reload"],
-      "problemMatcher": []
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "owner": "custom",
+          "pattern": [
+            { "regexp": ".*", "file": 1, "location": 1, "message": 1 }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".*",
+            "endsPattern": "Application startup complete."
+          }
+        }
+      ]
     },
     {
       "label": "tests:server",
@@ -15,6 +28,36 @@
       "args": ["-m", "pytest", "-q"],
       "problemMatcher": []
     },
-    { "label": "ui:dev", "type": "shell", "command": "npm run dev --prefix ui", "problemMatcher": [] }
+    { "label": "ui:dev", "type": "shell", "command": "npm run dev --prefix ui", "problemMatcher": [], "isBackground": true }
+  ,
+    {
+      "label": "tools:lyrics:install",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["-m", "pip", "install", "-r", "tools/requirements-lyrics.txt"],
+      "problemMatcher": []
+    },
+    {
+      "label": "tools:lyrics:run",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["tools/lyric_extractor.py", "--snippet", "${input:lyricSnippet}"],
+      "problemMatcher": []
+    }
+  ],
+  "compounds": [
+    {
+      "label": "dev:all",
+      "tasks": ["server:run", "ui:dev"],
+      "stopAll": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "lyricSnippet",
+      "type": "promptString",
+      "description": "Lyric snippet to log",
+      "default": "I shine a light into a thousand eyes"
+    }
   ]
 }

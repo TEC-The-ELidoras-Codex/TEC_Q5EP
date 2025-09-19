@@ -109,6 +109,8 @@ def pack_run(run_id: str):
                 zf.write(p, arcname=p.name)
     mem.seek(0)
 
-    out_path = ROOT / 'data' / 'evidence_packs' / f'{run_id}_bundle.zip'
+    out_dir = ROOT / 'data' / 'evidence_packs'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f'{run_id}_bundle.zip'
     out_path.write_bytes(mem.getvalue())
     return FileResponse(path=out_path, media_type='application/zip', filename=out_path.name)

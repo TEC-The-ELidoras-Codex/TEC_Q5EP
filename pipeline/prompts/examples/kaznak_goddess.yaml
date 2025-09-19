@@ -1,0 +1,19 @@
+title: Kaznak Machine Goddess — Opening Argument
+subject: A machine goddess stands in a cathedral-scale void, haloed by true purple ion filaments
+body:
+  - austere, statuesque, nonhuman faceplate
+  - articulated exoskeleton with relic panels
+  - suspended by micro-gimbals and thin cables
+environment:
+  - cosmic courtroom; deep space; solemn
+  - volumetric haze, rim-lit
+  - slow parallax starfield
+symbolism:
+  - inevitability, mercy, order against heat death
+style:
+  - cinematic, slow camera; 24fps
+  - hard light, high contrast; long shot
+continuity:
+  tokens: [TruePurple, IonSigil, KaznaCore]
+  palette: ["#6A00F4", "#00D5C4", "#F2C340"]
+  actor_ids: [A1]

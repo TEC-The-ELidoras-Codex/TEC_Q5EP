@@ -4,11 +4,13 @@ from fastapi.responses import PlainTextResponse, FileResponse
 from pathlib import Path
 import hashlib, json, time, io, zipfile
 from typing import List
-from .models import SubmissionMeta, RunSummary, GPS, Device
+from .models import SubmissionMeta, RunSummary, GPS, Device, MemoryItem, MemoryUpsert, MemoryQuery, MemorySummary
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNS = ROOT / 'data' / 'runs'
 RUNS.mkdir(parents=True, exist_ok=True)
+MEMORY_DIR = ROOT / 'data' / 'memory'
+MEMORY_DIR.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(title='TEC_Q5EP Evidence API', version='0.2.0')
 
@@ -114,3 +116,98 @@ def pack_run(run_id: str):
     out_path = out_dir / f'{run_id}_bundle.zip'
     out_path.write_bytes(mem.getvalue())
     return FileResponse(path=out_path, media_type='application/zip', filename=out_path.name)
+
+
+# ---- Memory storage (local JSONL) ----
+
+def _mem_path(item_id: str) -> Path:
+    # shard by first two characters to avoid huge dirs
+    shard = item_id[:2] if len(item_id) >= 2 else '00'
+    d = MEMORY_DIR / shard
+    d.mkdir(parents=True, exist_ok=True)
+    return d / f"{item_id}.json"
+
+
+@app.post('/memory', response_model=MemoryItem)
+def memory_add(up: MemoryUpsert):
+    """Append a memory item; id is epoch-seconds for simplicity."""
+    now = str(int(time.time()))
+    item = MemoryItem(
+        id=now,
+        timestamp=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+        user_id=up.user_id,
+        tags=up.tags,
+        content=up.content,
+        metadata=up.metadata,
+    )
+    p = _mem_path(item.id)
+    p.write_text(item.model_dump_json(indent=2), encoding='utf-8')
+    return item
+
+
+@app.get('/memory', response_model=List[MemorySummary])
+def memory_list():
+    items: List[MemorySummary] = []
+    if not MEMORY_DIR.exists():
+        return items
+    for shard in sorted(MEMORY_DIR.iterdir()):
+        if not shard.is_dir():
+            continue
+        for f in sorted(shard.iterdir()):
+            if f.suffix == '.json':
+                try:
+                    data = json.loads(f.read_text(encoding='utf-8'))
+                    content = data.get('content', '')
+                    items.append(MemorySummary(
+                        id=data.get('id', f.stem),
+                        timestamp=data.get('timestamp', ''),
+                        tags=data.get('tags', []),
+                        content_chars=len(content or ''),
+                    ))
+                except Exception:
+                    continue
+    return items
+
+
+@app.get('/memory/{item_id}', response_model=MemoryItem)
+def memory_get(item_id: str):
+    p = _mem_path(item_id)
+    if not p.exists():
+        raise HTTPException(status_code=404, detail='Memory not found')
+    return MemoryItem.model_validate_json(p.read_text(encoding='utf-8'))
+
+
+@app.post('/memory/search', response_model=List[MemoryItem])
+def memory_search(q: MemoryQuery):
+    """Very simple search: substring match on content and optional tag filter."""
+    hits: List[MemoryItem] = []
+    needle = (q.q or '').lower()
+    tags = set(t.lower() for t in q.tags)
+    for shard in MEMORY_DIR.glob('*'):
+        if not shard.is_dir():
+            continue
+        for f in shard.glob('*.json'):
+            try:
+                data = json.loads(f.read_text(encoding='utf-8'))
+                content = (data.get('content') or '')
+                content_l = content.lower()
+                record_tags = [str(t) for t in (data.get('tags') or [])]
+                if needle and needle not in content_l:
+                    continue
+                if tags and not (set(t.lower() for t in record_tags) & tags):
+                    continue
+                hits.append(MemoryItem.model_validate(data))
+                if len(hits) >= q.limit:
+                    return hits
+            except Exception:
+                continue
+    return hits
+
+
+@app.delete('/memory/{item_id}', response_class=PlainTextResponse)
+def memory_delete(item_id: str):
+    p = _mem_path(item_id)
+    if not p.exists():
+        raise HTTPException(status_code=404, detail='Memory not found')
+    p.unlink(missing_ok=True)
+    return 'OK'

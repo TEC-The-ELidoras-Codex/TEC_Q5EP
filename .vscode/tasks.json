@@ -28,8 +28,7 @@
       "args": ["-m", "pytest", "-q"],
       "problemMatcher": []
     },
-    { "label": "ui:dev", "type": "shell", "command": "npm run dev --prefix ui", "problemMatcher": [], "isBackground": true }
-  ,
+    { "label": "ui:dev", "type": "shell", "command": "npm run dev --prefix ui", "problemMatcher": [], "isBackground": true },
     {
       "label": "tools:lyrics:install",
       "type": "shell",
@@ -42,6 +41,34 @@
       "type": "shell",
       "command": "${workspaceFolder}/.venv/Scripts/python.exe",
       "args": ["tools/lyric_extractor.py", "--snippet", "${input:lyricSnippet}"],
+      "problemMatcher": []
+  },
+    {
+      "label": "agents:storyboard:kaznak-reveal",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["-m", "agents.cli", "agents/workflows/video_kaznak_reveal.yaml", "--base-url", "http://127.0.0.1:8000"],
+      "problemMatcher": []
+    },
+    {
+      "label": "agents:companion:pull-recent",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["-m", "agents.cli", "agents/workflows/companion_pull_recent.yaml", "--base-url", "http://127.0.0.1:8000"],
+      "problemMatcher": []
+    },
+    {
+      "label": "agents:skymap:zoom",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["-m", "agents.cli", "agents/workflows/skymap_zoom.yaml", "--base-url", "http://127.0.0.1:8000"],
+      "problemMatcher": []
+    },
+    {
+      "label": "agents:archetype:from-pantheon",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["-m", "agents.cli", "agents/workflows/archetype_from_pantheon.yaml", "--base-url", "http://127.0.0.1:8000"],
       "problemMatcher": []
     }
   ],

@@ -1,0 +1,17 @@
+name: twin-judgments-infographic
+steps:
+  - tool: load_prompt_pack
+    inputs:
+      md_path: docs/infographics/The_Twin_Judgments_prompt.md
+  - tool: save_text
+    inputs:
+      out_path: data/agents/infographics/${scratch.run_id}/twin_judgments_prompt.md
+      content: ${scratch.prompt_text}
+  - tool: memory_add
+    inputs:
+      item:
+        user_id: kaznakalpha
+        tags: ["infographic", "twin-judgments", "prompt-pack"]
+        content: Saved Twin Judgments prompt pack for rendering
+        metadata:
+          path: data/agents/infographics/${scratch.run_id}/twin_judgments_prompt.md

@@ -1,3 +1,4 @@
+we 091562
 <div align="center">
 
 # TEC – The Elidoras Codex · Q5EP
@@ -59,6 +60,10 @@ See `docs/` for the philosophy, specs, and playbooks:
 - `docs/COPILOT_ROM_PROMPT_GUIDE.md` — editor cues for staged prompts and evaluation
 - `docs/KAZNAK_CPP_PITCH.md` — vision and research fit
 - `docs/PROMPT_GUIDELINES_SD_FLUX.md` — model-specific prompt patterns
+- `docs/MEMORY.md` — local Memory API (CRUD + search) used by the backend
+- `docs/TEC_IT_RUNBOOK.md` — one-pager to stand up mail/SharePoint/Azure
+- `docs/POWER_AUTOMATE_INTAKE.md` — click guide to capture emails into SharePoint
+- `docs/acronyms_template.csv` — starter CSV for Copilot Search → Acronyms
 
 ## 🚀 Quickstart
 

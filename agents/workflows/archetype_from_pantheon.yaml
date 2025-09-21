@@ -1,0 +1,22 @@
+name: archetype-from-pantheon
+steps:
+  - tool: pantheon_load
+    inputs:
+      path: data/pantheon/entries.json
+  - tool: pantheon_select
+    inputs:
+      name: ${scratch.name}
+  - tool: pantheon_render_card
+    inputs: {}
+  - tool: save_text
+    inputs:
+      out_path: data/agents/archetypes/${scratch.run_id}/${scratch.name}_card.md
+      content: ${scratch.pantheon_card_md}
+  - tool: memory_add
+    inputs:
+      item:
+        user_id: kaznakalpha
+        tags: ["archetype", "pantheon", "card"]
+        content: Saved archetype card from pantheon
+        metadata:
+          path: data/agents/archetypes/${scratch.run_id}/${scratch.name}_card.md

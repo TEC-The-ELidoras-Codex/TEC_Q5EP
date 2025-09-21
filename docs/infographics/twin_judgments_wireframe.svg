@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1800" viewBox="0 0 1200 1800">
+  <rect width="1200" height="1800" fill="#020305"/>
+  <!-- central divider -->
+  <rect x="598" y="0" width="4" height="1800" fill="#F2C340" opacity="0.6" />
+  <!-- left column zones -->
+  <rect x="80" y="120" width="480" height="360" fill="none" stroke="#6A00F4" stroke-dasharray="6,6"/>
+  <text x="90" y="150" fill="#FFFFF6" font-size="24">Kaznak Portrait</text>
+  <rect x="80" y="520" width="480" height="220" fill="none" stroke="#6A00F4" stroke-dasharray="6,6"/>
+  <text x="90" y="550" fill="#FFFFF6" font-size="24">Entropy / Method</text>
+  <rect x="80" y="780" width="480" height="300" fill="none" stroke="#6A00F4" stroke-dasharray="6,6"/>
+  <text x="90" y="810" fill="#FFFFF6" font-size="24">Cult / Doctrine</text>
+  <!-- right column zones -->
+  <rect x="640" y="120" width="480" height="360" fill="none" stroke="#00D5C4" stroke-dasharray="6,6"/>
+  <text x="650" y="150" fill="#FFFFF6" font-size="24">Lumina Portrait</text>
+  <rect x="640" y="520" width="480" height="220" fill="none" stroke="#00D5C4" stroke-dasharray="6,6"/>
+  <text x="650" y="550" fill="#FFFFF6" font-size="24">Information / Method</text>
+  <rect x="640" y="780" width="480" height="300" fill="none" stroke="#00D5C4" stroke-dasharray="6,6"/>
+  <text x="650" y="810" fill="#FFFFF6" font-size="24">Cult / Doctrine</text>
+  <!-- title and footer -->
+  <text x="120" y="60" fill="#F2C340" font-size="42">THE TWIN JUDGMENTS</text>
+  <text x="500" y="1740" fill="#F2C340" font-size="20">TEC • Symmetric layout • Divider motif</text>
+</svg>

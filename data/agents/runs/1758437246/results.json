@@ -1,0 +1,79 @@
+[
+  {
+    "step": 1,
+    "tool": "memory_search",
+    "inputs": {
+      "params": {
+        "text": "",
+        "tags": [
+          "storyboard",
+          "infographic",
+          "video",
+          "prompt-pack"
+        ],
+        "limit": 50
+      }
+    },
+    "output": {
+      "count": 5
+    }
+  },
+  {
+    "step": 2,
+    "tool": "save_json",
+    "inputs": {
+      "out_path": "data/agents/companion/1758437246/recent_memories.json",
+      "data": "[{'id': '1758400565', 'timestamp': '2025-09-20T20:36:05Z', 'user_id': 'kaznakalpha', 'tags': ['infographic', 'twin-judgments', 'prompt-pack'], 'content': 'Saved Twin Judgments prompt pack for rendering', 'metadata': {'path': 'data/agents/infographics/${scratch.run_id}/twin_judgments_prompt.md'}}, {'id': '1758400600', 'timestamp': '2025-09-20T20:36:40Z', 'user_id': 'kaznakalpha', 'tags': ['infographic', 'twin-judgments', 'prompt-pack'], 'content': 'Saved Twin Judgments prompt pack for rendering', 'metadata': {'path': 'data/agents/infographics/1758400600/twin_judgments_prompt.md'}}, {'id': '1758400802', 'timestamp': '2025-09-20T20:40:02Z', 'user_id': 'kaznakalpha', 'tags': ['infographic', 'twin-judgments', 'prompt-pack'], 'content': 'Saved Twin Judgments prompt pack for rendering', 'metadata': {'path': 'data/agents/infographics/1758400802/twin_judgments_prompt.md'}}, {'id': '1758437180', 'timestamp': '2025-09-21T06:46:20Z', 'user_id': 'kaznakalpha', 'tags': ['storyboard', 'kaznak', 'video', 'resonance'], 'content': 'Saved KAZNAK reveal timing script', 'metadata': {'path': 'data/agents/storyboards/1758437179/kaznak_reveal_timing.md'}}, {'id': '1758437195', 'timestamp': '2025-09-21T06:46:35Z', 'user_id': 'kaznakalpha', 'tags': ['storyboard', 'kaznak', 'video', 'resonance'], 'content': 'Saved KAZNAK reveal timing script', 'metadata': {'path': 'data/agents/storyboards/1758437190/kaznak_reveal_timing.md'}}]"
+    },
+    "output": {
+      "saved": "data\\agents\\companion\\1758437246\\recent_memories.json",
+      "bytes": 1425
+    }
+  },
+  {
+    "step": 3,
+    "tool": "save_text",
+    "inputs": {
+      "out_path": "data/agents/companion/1758437246/recent_memories.md",
+      "content": "# Recent Memories\n\n- 2025-09-20T20:36:05Z | infographic, twin-judgments, prompt-pack | Saved Twin Judgments prompt pack for rendering\n- 2025-09-20T20:36:40Z | infographic, twin-judgments, prompt-pack | Saved Twin Judgments prompt pack for rendering\n- 2025-09-20T20:40:02Z | infographic, twin-judgments, prompt-pack | Saved Twin Judgments prompt pack for rendering\n- 2025-09-21T06:46:20Z | storyboard, kaznak, video, resonance | Saved KAZNAK reveal timing script\n- 2025-09-21T06:46:35Z | storyboard, kaznak, video, resonance | Saved KAZNAK reveal timing script"
+    },
+    "output": {
+      "saved": "data\\agents\\companion\\1758437246\\recent_memories.md",
+      "bytes": 559
+    }
+  },
+  {
+    "step": 4,
+    "tool": "memory_add",
+    "inputs": {
+      "item": {
+        "user_id": "kaznakalpha",
+        "tags": [
+          "companion",
+          "export",
+          "memory"
+        ],
+        "content": "Exported recent creative memories to companion bundle",
+        "metadata": {
+          "json": "data/agents/companion/1758437246/recent_memories.json",
+          "md": "data/agents/companion/1758437246/recent_memories.md"
+        }
+      }
+    },
+    "output": {
+      "id": "1758437246",
+      "timestamp": "2025-09-21T06:47:26Z",
+      "user_id": "kaznakalpha",
+      "tags": [
+        "companion",
+        "export",
+        "memory"
+      ],
+      "content": "Exported recent creative memories to companion bundle",
+      "metadata": {
+        "json": "data/agents/companion/1758437246/recent_memories.json",
+        "md": "data/agents/companion/1758437246/recent_memories.md"
+      }
+    }
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "id": "1758437246",
+  "timestamp": "2025-09-21T06:47:26Z",
+  "user_id": "kaznakalpha",
+  "tags": [
+    "companion",
+    "export",
+    "memory"
+  ],
+  "content": "Exported recent creative memories to companion bundle",
+  "metadata": {
+    "json": "data/agents/companion/1758437246/recent_memories.json",
+    "md": "data/agents/companion/1758437246/recent_memories.md"
+  }
+}

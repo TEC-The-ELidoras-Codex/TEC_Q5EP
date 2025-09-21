@@ -1,0 +1,25 @@
+name: companion-pull-recent
+steps:
+  - tool: memory_search
+    inputs:
+      params:
+        text: ""
+        tags: ["storyboard", "infographic", "video", "prompt-pack"]
+        limit: 50
+  - tool: save_json
+    inputs:
+      out_path: data/agents/companion/${scratch.run_id}/recent_memories.json
+      data: ${scratch.search_results}
+  - tool: save_text
+    inputs:
+      out_path: data/agents/companion/${scratch.run_id}/recent_memories.md
+      content: ${scratch.search_markdown}
+  - tool: memory_add
+    inputs:
+      item:
+        user_id: kaznakalpha
+        tags: ["companion", "export", "memory"]
+        content: Exported recent creative memories to companion bundle
+        metadata:
+          json: data/agents/companion/${scratch.run_id}/recent_memories.json
+          md: data/agents/companion/${scratch.run_id}/recent_memories.md

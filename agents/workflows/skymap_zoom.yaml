@@ -1,0 +1,31 @@
+name: skymap-zoom
+steps:
+  - tool: pantheon_load
+    inputs:
+      path: data/pantheon/entries.json
+  - tool: pantheon_select
+    inputs:
+      name: ${scratch.name}
+  - tool: pantheon_nearest
+    inputs:
+      ra: ${scratch.ra}
+      dec: ${scratch.dec}
+      k: 3
+  - tool: save_text
+    inputs:
+      out_path: data/agents/skymap/${scratch.run_id}/zoom.md
+      content: |
+        # Skymap Zoom
+        
+        Selected: ${scratch.name}
+        
+        Nearest entities:
+        ${scratch.nearest_list}
+  - tool: memory_add
+    inputs:
+      item:
+        user_id: kaznakalpha
+        tags: ["skymap", "pantheon", "zoom"]
+        content: Saved skymap zoom summary
+        metadata:
+          path: data/agents/skymap/${scratch.run_id}/zoom.md

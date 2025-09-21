@@ -1,0 +1,15 @@
+Acronym,StandsFor,Description,Owner
+TEC,The Elidoras Codex,Sovereign myth-tech operating system for AIRTH/TEC.,Elidoras
+AIRTH,Autonomous Intelligent Reasoning & Teaching Heuristics,Machine goddess copilot; TEC’s core AI assistant.,Elidoras
+KAZNAK,Primary hive/entity in TEC canon,Brand face for security & edge ops.,Elidoras
+EID,Elidoras ID,Internal identity handle for tools/logins.,Elidoras
+SPF,Sender Policy Framework,DNS TXT listing allowed senders for your domain.,IT
+DKIM,DomainKeys Identified Mail,Cryptographic signature for outbound mail from Microsoft 365.,IT
+DMARC,Domain-based Message Authentication Reporting and Conformance,Policy/reporting on top of SPF/DKIM.,IT
+MDM,Mobile Device Management,Device management (Intune); can skip initially.,IT
+EAC,Exchange Admin Center,Admin portal used for migrations and mail settings.,IT
+MDO,Microsoft Defender for Office 365,Phishing/malware filters in Microsoft 365.,IT
+ROM,Resonant Organized Meaning,TEC’s information-theoretic coherence framework.,Elidoras
+Q5EP,Quantum Fifth-Force Evidence Protocol,This repo’s fastapi backend + minimal TS UI.,Elidoras
+PG,Prompt Goddess,Staged prompting methodology and engine.,Elidoras
+RAG,Retrieval-Augmented Generation,Local-first retrieval scaffold in content_hub/.,Elidoras

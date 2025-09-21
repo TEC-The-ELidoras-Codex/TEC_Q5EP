@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Kaznak Queen",
+    "type": "deity",
+    "ra_deg": 310.0,
+    "dec_deg": -15.0,
+    "tags": ["entropy", "hive", "queen"],
+    "domain": ["entropy", "substrate"],
+    "symbols": ["black hole", "spore", "fractured silhouette"],
+    "palette": ["#0A0A0C", "#6A00F4", "#00B56A"],
+    "lore": "Sovereign hunger; dominion via neurospores; unity through consumption of meaning.",
+    "traits": {
+      "light": "unyielding focus, adaptive strength",
+      "shadow": "assimilation, erasure of self",
+      "guidance": "When you seek certainty, beware the cost of unity."
+    },
+    "prompts": {
+      "text": "Kaznak Queen, Midnight Black carapace, womb-core glow (red-yellow-purple), heterochromatic eyes, sacred horror + futuristic HUD, high-contrast",
+      "negative": "blurry, cartoonish, low-res"
+    }
+  },
+  {
+    "name": "Lumina Solara",
+    "type": "deity",
+    "ra_deg": 120.0,
+    "dec_deg": 22.0,
+    "tags": ["light", "archive", "lightra"],
+    "domain": ["light", "information", "resonance"],
+    "symbols": ["atom", "radiant haze", "hooded figure"],
+    "palette": ["#FFFFF6", "#0B1E3B", "#00D5C4"],
+    "lore": "Courier of the Seen; passive illumination; hope that burdens the solitary mind.",
+    "traits": {
+      "light": "clarity, coherence",
+      "shadow": "analysis paralysis, isolation",
+      "guidance": "Illuminate, but do not blind."
+    },
+    "prompts": {
+      "text": "Lumina Solara, Ivory White spectral gown, diffraction eyes, deep space void, vector clarity",
+      "negative": "photoreal, muddy contrast"
+    }
+  },
+  {
+    "name": "Fluffy Saturn",
+    "type": "celestial",
+    "ra_deg": 300.0,
+    "dec_deg": -20.0,
+    "tags": ["saturn", "resonance", "myth"],
+    "domain": ["gravitation", "music", "resonance"],
+    "symbols": ["rings", "storm", "bassline"],
+    "palette": ["#6A00F4", "#00D5C4", "#F2C340"],
+    "lore": "Saturn as a living instrument—rings strum gravity; storms hum electric hymns; a fluffy cloak of myth.",
+    "traits": {
+      "light": "playful gravitas",
+      "shadow": "addictive awe",
+      "guidance": "Let resonance lift you, not possess you."
+    },
+    "prompts": {
+      "text": "Saturn as mythic performer, fluffy rings, electric storms, cosmic music visualized, sacred horror + HUD",
+      "negative": "cartoonish, low-detail"
+    }
+  }
+]

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Memory Scribe</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 12px; width: 360px; }
+      textarea { width: 100%; min-height: 120px; }
+      input[type=text] { width: 100%; }
+      .row { display: flex; gap: 8px; align-items: center; }
+      .row > * { flex: 1; }
+      .small { font-size: 12px; color: #666; }
+      .right { text-align: right; }
+      details { margin-top: 8px; }
+      .pill { display:inline-block; padding: 2px 6px; border-radius: 10px; background:#eef; margin: 2px; cursor: pointer; }
+      .ok { color: #0a0; }
+      .err { color: #a00; }
+    </style>
+  </head>
+  <body>
+    <h3>Capture to Memory</h3>
+    <div class="row">
+      <input id="tags" type="text" placeholder="tags (csv)" />
+    </div>
+    <textarea id="content" placeholder="Write or paste here...\n(Selected text auto-fills)"></textarea>
+    <input id="note" type="text" placeholder="optional note/metadata" />
+    <div class="row">
+      <button id="save">Save</button>
+      <div id="status" class="small right"></div>
+    </div>
+    <details>
+      <summary>Prompt helper</summary>
+      <div id="prompts"></div>
+    </details>
+    <script src="popup.js"></script>
+  </body>
+  </html>

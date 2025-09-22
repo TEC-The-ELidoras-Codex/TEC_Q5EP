@@ -1,4 +1,5 @@
 import argparse
+import json
 from pathlib import Path
 import yaml
 
@@ -23,6 +24,16 @@ def register_tools(ctx: AgentContext, registry: ToolRegistry):
         ctx.scratch["prompt_path"] = res.get("path", md_path)
         return res
 
+    # Generic text loader (markdown or plain text)
+    def _load_text(inputs: dict):
+        md_path = inputs.get("md_path") or inputs.get("path")
+        if not isinstance(md_path, str) or not md_path:
+            raise ValueError("load_text requires 'md_path' or 'path' string input")
+        res = load_prompt_pack(md_path)
+        ctx.scratch["text"] = res.get("text", "")
+        ctx.scratch["text_path"] = res.get("path", md_path)
+        return {"path": res.get("path"), "chars": len(res.get("text", ""))}
+
     def _save_text(inputs: dict):
         out_path = inputs.get("out_path")
         if not isinstance(out_path, str) or not out_path:
@@ -31,7 +42,20 @@ def register_tools(ctx: AgentContext, registry: ToolRegistry):
         return save_text(out_path, content)
 
     def _memory_add(inputs: dict):
-        item = inputs.get("item", {})
+        item = dict(inputs.get("item", {}))
+        # Coerce tags if provided as a string (CSV or JSON)
+        tags = item.get("tags", [])
+        if isinstance(tags, str):
+            t = tags.strip()
+            if t.startswith("[") and t.endswith("]"):
+                try:
+                    parsed = json.loads(t)
+                    if isinstance(parsed, list):
+                        item["tags"] = parsed
+                except Exception:
+                    item["tags"] = [s.strip() for s in t.strip("[]").split(",") if s.strip()]
+            else:
+                item["tags"] = [s.strip() for s in t.split(",") if s.strip()]
         return client["add"](item)
 
     def _memory_search(inputs: dict):
@@ -54,6 +78,7 @@ def register_tools(ctx: AgentContext, registry: ToolRegistry):
         return {"count": len(results)}
 
     registry.register("load_prompt_pack", _load_prompt_pack)
+    registry.register("load_text", _load_text)
     registry.register("save_text", _save_text)
     registry.register("memory_add", _memory_add)
     registry.register("memory_search", _memory_search)

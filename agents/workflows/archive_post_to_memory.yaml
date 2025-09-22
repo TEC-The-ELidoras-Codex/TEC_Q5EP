@@ -1,0 +1,15 @@
+name: Archive Post To Memory
+description: Load a local markdown/text file and archive it into the Memory API with tags and source metadata.
+steps:
+  - tool: load_text
+    inputs:
+      md_path: ${scratch.path}
+  - tool: memory_add
+    inputs:
+      item:
+        tags: ${scratch.tags}
+        content: ${scratch.text}
+        metadata:
+          source_path: ${scratch.text_path}
+          archived_by_run: ${scratch.run_id}
+          note: ${scratch.note}

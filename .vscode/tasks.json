@@ -71,6 +71,36 @@
       "args": ["-m", "agents.cli", "agents/workflows/archetype_from_pantheon.yaml", "--base-url", "http://127.0.0.1:8000"],
       "problemMatcher": []
     }
+    ,
+    {
+      "label": "agents:archive:post-to-memory",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "-m", "agents.cli",
+        "agents/workflows/archive_post_to_memory.yaml",
+        "--base-url", "http://127.0.0.1:8000",
+        "--var", "path=${input:archiveDocPath}",
+        "--var", "tags=${input:archiveTags}",
+        "--var", "note=${input:archiveNote}"
+      ],
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "tools:copilot:ingest",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "tools/copilot_ingester.py",
+        "--summary", "${input:ingestSummary}",
+        "--source-url", "${input:ingestSourceUrl}",
+        "--tags", "${input:ingestTags}",
+        "--notes", "${input:ingestNotes}",
+        "--api-base-url", "http://127.0.0.1:8000"
+      ],
+      "problemMatcher": []
+    }
   ],
   "compounds": [
     {
@@ -86,5 +116,29 @@
       "description": "Lyric snippet to log",
       "default": "I shine a light into a thousand eyes"
     }
+    ,
+    {
+      "id": "archiveDocPath",
+      "type": "promptString",
+      "description": "Path to markdown/text doc to archive",
+      "default": "docs/music/sleep_token/concert_breakdown.md"
+    },
+    {
+      "id": "archiveTags",
+      "type": "promptString",
+      "description": "Comma-separated tags or JSON list",
+      "default": "sleep-token,ritual,concert"
+    },
+    {
+      "id": "archiveNote",
+      "type": "promptString",
+      "description": "Optional note to include in metadata",
+      "default": "archived from docs"
+    }
+    ,
+    { "id": "ingestSummary", "type": "promptString", "description": "Summary text from Copilot", "default": "" },
+    { "id": "ingestSourceUrl", "type": "promptString", "description": "Source URL", "default": "https://" },
+    { "id": "ingestTags", "type": "promptString", "description": "Comma-separated tags", "default": "research,web,ingest" },
+    { "id": "ingestNotes", "type": "promptString", "description": "Optional personal notes", "default": "" }
   ]
 }

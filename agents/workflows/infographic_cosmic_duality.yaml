@@ -1,0 +1,17 @@
+name: cosmic-duality-infographic
+steps:
+  - tool: load_prompt_pack
+    inputs:
+      md_path: docs/infographics/Cosmic_Duality_Comparison_v7_1.md
+  - tool: save_text
+    inputs:
+      out_path: data/agents/infographics/${scratch.run_id}/cosmic_duality_prompt.md
+      content: ${scratch.prompt_text}
+  - tool: memory_add
+    inputs:
+      item:
+        user_id: kaznakalpha
+        tags: ["infographic", "cosmic-duality", "prompt-pack"]
+        content: Saved Cosmic Duality prompt pack for rendering
+        metadata:
+          path: data/agents/infographics/${scratch.run_id}/cosmic_duality_prompt.md

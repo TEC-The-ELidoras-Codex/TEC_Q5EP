@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "TEC Memory Scribe",
+  "version": "0.1.0",
+  "description": "Capture snippets to TEC Memory and craft prompts fast.",
+  "action": {
+    "default_title": "Memory Scribe",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["storage", "activeTab", "contextMenus", "scripting"],
+  "host_permissions": ["http://127.0.0.1:8000/*", "http://localhost:8000/*"],
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

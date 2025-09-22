@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Memory Scribe Options</title>
+    <style>
+      body { font-family: system-ui, Segoe UI, Roboto, sans-serif; margin: 16px; max-width: 640px; }
+      input { width: 100%; }
+      label { display:block; margin: 8px 0 4px; }
+      .mt-12 { margin-top: 12px; }
+      .ml-8 { margin-left: 8px; }
+    </style>
+  </head>
+  <body>
+    <h2>Memory Scribe • Options</h2>
+    <label for="baseUrl">API Base URL</label>
+    <input id="baseUrl" type="text" placeholder="http://127.0.0.1:8000" />
+    <label for="defaultTags">Default Tags (csv)</label>
+    <input id="defaultTags" type="text" placeholder="web,clip" />
+    <div class="mt-12">
+      <button id="save">Save</button>
+      <span id="status" class="ml-8"></span>
+    </div>
+    <script>
+      function $(id){ return document.getElementById(id); }
+      document.addEventListener('DOMContentLoaded', () => {
+        chrome.storage.sync.get(['baseUrl','defaultTags'], (d) => {
+          $('baseUrl').value = d.baseUrl || 'http://127.0.0.1:8000';
+          $('defaultTags').value = d.defaultTags || 'web,clip';
+        });
+        $('save').addEventListener('click', () => {
+          chrome.storage.sync.set({ baseUrl: $('baseUrl').value, defaultTags: $('defaultTags').value }, () => {
+            $('status').textContent = 'Saved';
+            setTimeout(() => $('status').textContent = '', 1200);
+          });
+        });
+      });
+    </script>
+  </body>
+  </html>

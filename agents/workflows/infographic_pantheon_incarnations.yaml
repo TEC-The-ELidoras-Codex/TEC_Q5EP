@@ -1,0 +1,17 @@
+name: pantheon-incarnations-infographic
+steps:
+  - tool: load_prompt_pack
+    inputs:
+      md_path: docs/infographics/Pantheon_Incarnations_v8_master.md
+  - tool: save_text
+    inputs:
+      out_path: data/agents/infographics/${scratch.run_id}/pantheon_incarnations_v8_master.md
+      content: ${scratch.prompt_text}
+  - tool: memory_add
+    inputs:
+      item:
+        user_id: kaznakalpha
+        tags: ["infographic", "pantheon", "incarnations", "prompt-pack"]
+        content: Saved Pantheon Incarnations v8 master prompt pack for rendering
+        metadata:
+          path: data/agents/infographics/${scratch.run_id}/pantheon_incarnations_v8_master.md

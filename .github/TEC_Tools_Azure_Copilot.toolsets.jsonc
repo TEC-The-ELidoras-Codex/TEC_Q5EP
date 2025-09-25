@@ -1,0 +1,14 @@
+{
+    // Default tool set for TEC_Q5EP agents (Azure Copilot + helpers)
+    "TEC_Azure_Default": {
+        "tools": [
+            "azure-copilot",
+            "memory",
+            "sequentialthinking",
+            "character",
+            "huggingface"
+        ],
+        "description": "Default toolset used by agents: Azure Copilot plus local helpers (memory, sequential thinking) and HTTP connectors.",
+        "icon": "cloud"
+    }
+}

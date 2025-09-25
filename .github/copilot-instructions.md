@@ -1,3 +1,4 @@
+
 # Copilot instructions for TEC_Q5EP
 
 This repo powers TEC_Q5EP — a FastAPI backend + minimal TS UI, plus docs, agents, and a local RAG scaffold. Follow these patterns to stay productive and on‑brand.

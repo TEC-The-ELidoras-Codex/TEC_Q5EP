@@ -7,6 +7,7 @@ from agents.core.base import Agent, AgentContext, ToolRegistry, new_run
 from agents.tools.prompt_pack import load_prompt_pack, save_text, save_json, copy_file
 from agents.tools.pantheon import load_pantheon, find_by_name, find_nearest, render_archetype_card
 from agents.tools.memory_client import make_memory_client
+from agents.tools import media as media_tools
 
 
 def register_tools(ctx: AgentContext, registry: ToolRegistry):
@@ -97,6 +98,27 @@ def register_tools(ctx: AgentContext, registry: ToolRegistry):
     registry.register("memory_add", _memory_add)
     registry.register("memory_search", _memory_search)
     
+    # Media tools
+    def _media_audio_ingest(inputs: dict):
+        res = media_tools.ingest_audio(inputs)
+        ctx.scratch["audio_manifest"] = res.get("manifest")
+        ctx.scratch["audio_manifest_path"] = res.get("manifest_path")
+        return res
+
+    def _media_audio_analysis(inputs: dict):
+        payload = dict(inputs)
+        if "audio_manifest" not in payload and ctx.scratch.get("audio_manifest"):
+            payload["audio_manifest"] = ctx.scratch["audio_manifest"]
+        if "audio_manifest_path" not in payload and ctx.scratch.get("audio_manifest_path"):
+            payload["audio_manifest_path"] = ctx.scratch["audio_manifest_path"]
+        res = media_tools.analyze_audio(payload)
+        ctx.scratch["audio_analysis"] = res
+        ctx.scratch["audio_summary"] = res.get("summary")
+        return res
+
+    registry.register("media.audio_ingest", _media_audio_ingest)
+    registry.register("media.audio_analysis", _media_audio_analysis)
+
     # Pantheon tools
     def _pantheon_load(inputs: dict):
         path = inputs.get("path", "data/pantheon/entries.json")
@@ -147,7 +169,11 @@ def register_tools(ctx: AgentContext, registry: ToolRegistry):
         out_path = inputs.get("out_path")
         if not isinstance(out_path, str) or not out_path:
             raise ValueError("save_json requires 'out_path' string input")
-        data = inputs.get("data", {})
+        data = inputs.get("data")
+        if data is None and ctx.scratch.get("audio_analysis"):
+            data = ctx.scratch["audio_analysis"]
+        if data is None:
+            data = {}
         return save_json(out_path, data)
     registry.register("save_json", _save_json)
 

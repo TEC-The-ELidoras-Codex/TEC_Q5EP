@@ -1,0 +1,37 @@
+# TEC Media Companion Agent Workflow (Draft)
+# Status: scaffold only – tooling to be implemented in feature/media-companion-agent
+
+version: 0.2.0
+name: media_companion_agent
+summary: |
+  Audio-first companion prototype that ingests a track, extracts lightweight features,
+  and saves a lore-ready summary for follow-up dialogue work.
+
+steps:
+  - id: ingest_audio
+    tool: media.audio_ingest
+    inputs:
+      audio_path: ${scratch.audio_path}
+      output_dir: data/agents/media_companion/${scratch.run_id}/audio
+
+  - id: analyze_audio
+    tool: media.audio_analysis
+    inputs:
+      output_dir: data/agents/media_companion/${scratch.run_id}/audio
+      context_tags: ${scratch.context_tags}
+
+  - id: save_audio_summary
+    tool: save_text
+    inputs:
+      out_path: data/agents/media_companion/${scratch.run_id}/companion_summary.md
+      content: |
+        # Audio Companion Summary
+
+        ${scratch.audio_summary}
+
+  - id: save_audio_analysis_json
+    tool: save_json
+    inputs:
+      out_path: data/agents/media_companion/${scratch.run_id}/audio/analysis.json
+
+# NOTE: Video ingestion, companion persona synthesis, and memory logging will be layered in future milestones.

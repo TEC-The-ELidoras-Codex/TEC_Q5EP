@@ -84,7 +84,7 @@ The dashboard refreshes every 30 seconds and provides quick access to download p
 
 ./data/: Default output directory for agent runs, memory files, and evidence packs.
 
-./docs/: The philosophical and technical heart of the project. Contains the core lore, prompt engineering guides, and system specs.
+./docs/: The philosophical and technical heart of the project. Contains the core lore, prompt engineering guides, and system specs. See `docs/COMMANDS_CHEATSHEET.md` for day-to-day command references.
 
 ./eval/: Scripts for evaluating the coherence and quality of AI-generated outputs.
 

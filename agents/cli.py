@@ -4,7 +4,7 @@ from pathlib import Path
 import yaml
 
 from agents.core.base import Agent, AgentContext, ToolRegistry, new_run
-from agents.tools.prompt_pack import load_prompt_pack, save_text, save_json
+from agents.tools.prompt_pack import load_prompt_pack, save_text, save_json, copy_file
 from agents.tools.pantheon import load_pantheon, find_by_name, find_nearest, render_archetype_card
 from agents.tools.memory_client import make_memory_client
 
@@ -39,7 +39,20 @@ def register_tools(ctx: AgentContext, registry: ToolRegistry):
         if not isinstance(out_path, str) or not out_path:
             raise ValueError("save_text requires 'out_path' string input")
         content = inputs.get("content", "")
-        return save_text(out_path, content)
+        res = save_text(out_path, content)
+        ctx.scratch["last_saved_text_path"] = out_path
+        return res
+
+    def _copy_file(inputs: dict):
+        src_path = inputs.get("src") or inputs.get("src_path")
+        dest_path = inputs.get("dest") or inputs.get("dest_path")
+        if not isinstance(src_path, str) or not src_path:
+            raise ValueError("copy_file requires 'src'/'src_path' string input")
+        if not isinstance(dest_path, str) or not dest_path:
+            raise ValueError("copy_file requires 'dest'/'dest_path' string input")
+        res = copy_file(src_path, dest_path)
+        ctx.scratch["last_copied_path"] = dest_path
+        return res
 
     def _memory_add(inputs: dict):
         item = dict(inputs.get("item", {}))
@@ -80,6 +93,7 @@ def register_tools(ctx: AgentContext, registry: ToolRegistry):
     registry.register("load_prompt_pack", _load_prompt_pack)
     registry.register("load_text", _load_text)
     registry.register("save_text", _save_text)
+    registry.register("copy_file", _copy_file)
     registry.register("memory_add", _memory_add)
     registry.register("memory_search", _memory_search)
     

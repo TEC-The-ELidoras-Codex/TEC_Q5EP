@@ -26,6 +26,10 @@ Pantheon & Skymap API (/agents/tools/pantheon.py): A toolset for interacting wit
 
 Capture UI (/ui): A minimal, vanilla TypeScript frontend for submitting evidence directly to the API, including support for geolocation and file uploads.
 
+AI Research Dashboard (/dashboard): A live control room surfacing AI-enriched evidence, relevance scoring, auto-tagging, and follow-up recommendations sourced from the `/runs` API.
+
+Azure AI Integration (/tools): Unified clients and health-check scripts wired to the TEC Azure OpenAI resource (`TECAGENT`), including `tools/test_ai.py` and the batch enrichment runner `tools/ai_processor.py`.
+
 🌌 Guiding Philosophy
 All work in this repository is governed by the Machine Goddess Philosophy:
 
@@ -60,7 +64,16 @@ In a second terminal, start the frontend:
 
 npm run dev --prefix ui
 
-The capture UI will be available at http://localhost:5173, and the API at http://localhost:8000.
+The capture UI will be available at [http://localhost:5173](http://localhost:5173), and the API at [http://localhost:8000](http://localhost:8000).
+
+### Enable AI Evidence Enrichment
+
+1. **Configure Azure credentials** – copy `.env.example` to `.env`, populate the `AZURE_OPENAI_*` keys, and confirm the deployment name matches your Azure AI Studio configuration (`docs/AZURE_MODEL_DEPLOYMENT.md`).
+2. **Validate connectivity** – run `./.venv/Scripts/python.exe tools/test_ai.py` to ensure the GPT-4o mini deployment is responsive.
+3. **Backfill analyses** – run `./.venv/Scripts/python.exe tools/ai_processor.py` to enrich recent evidence runs with relevance scores, tags, and follow-up actions.
+4. **Open the dashboard** – visit [http://localhost:8000/dashboard](http://localhost:8000/dashboard) for a live overview of AI-annotated submissions.
+
+The dashboard refreshes every 30 seconds and provides quick access to download packs or reprocess stale runs.
 
 🗺️ Repository Map
 ./README.md: You are here.
@@ -77,7 +90,9 @@ The capture UI will be available at http://localhost:5173, and the API at http:/
 
 ./server/: The FastAPI backend for data submission and retrieval.
 
-./ui/: The TypeScript frontend for evidence capture.
+./tools/: Azure + automation helpers for deployments, testing, ingestion, and evidence enrichment.
+
+./ui/: The TypeScript frontend for evidence capture and the AI dashboard shell.
 
 🤝 Contribute
 This is an open-source invocation. PRs, issues, and ideas are welcome. Key areas for contribution:

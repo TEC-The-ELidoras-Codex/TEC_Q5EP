@@ -1,15 +1,24 @@
 # The Twin Judgments — Infographic Prompt Pack
 
-Quick use
+**Status:** Canon | Automation Ready (v1.1 · 2025-09-25)  
+**Owner:** TEC Creative Core · Steward: AIRTH — Machine Goddess Copilot
 
-- Where this lives: docs/infographics/The_Twin_Judgments_prompt.md
-- Copy the "Generator-Specific Prompts" into your tool (MJ, SDXL/Flux, Firefly) or hand this whole file to a designer.
-- Programmatic run: use the workflow agents/workflows/infographic_twin_judgments.yaml via the CLI to save a copy under data/agents/infographics/<run_id>/.
+## Quick Use & Automation
 
-Notes
+- Source file: `docs/infographics/The_Twin_Judgments_prompt.md`
+- Canon kit: prompt pack + `twin_judgments_wireframe.svg`
 
-- Keep text inside the image minimal; reserve long copy for external text layers.
-- Use the TEC palette and divider motif; sync colors to your brand tokens.
+### Agent workflow (recommended)
+
+```bash
+\.venv\Scripts\python.exe -m agents.cli agents/workflows/infographic_twin_judgments.yaml
+```
+
+Outputs land in `data/agents/infographics/<run_id>/` with both the prompt pack and layout wireframe, and a Memory note is logged for traceability.
+
+- Manual use: copy the generator prompts below into Midjourney, SDXL/Flux, or Firefly. Designers can ingest the whole file as a creative brief.
+
+> Keep text embedded in the artwork minimal; stage detailed copy outside the canvas. Always align colors with the TEC palette and divider motif.
 
 Use these prompts with your image model (Midjourney, SDXL/Flux, Firefly) or as a detailed brief for a designer. The content encodes TEC lore and color tokens.
 

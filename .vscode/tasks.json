@@ -1,144 +1,244 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "server:run",
-      "type": "shell",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": ["-m", "uvicorn", "server.app:app", "--reload"],
-      "isBackground": true,
-      "problemMatcher": [
-        {
-          "owner": "custom",
-          "pattern": [
-            { "regexp": ".*", "file": 1, "location": 1, "message": 1 }
-          ],
-          "background": {
-            "activeOnStart": true,
-            "beginsPattern": ".*",
-            "endsPattern": "Application startup complete."
-          }
-        }
-      ]
-    },
-    {
-      "label": "tests:server",
-      "type": "shell",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": ["-m", "pytest", "-q"],
-      "problemMatcher": []
-    },
-    { "label": "ui:dev", "type": "shell", "command": "npm run dev --prefix ui", "problemMatcher": [], "isBackground": true },
-    {
-      "label": "tools:lyrics:install",
-      "type": "shell",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": ["-m", "pip", "install", "-r", "tools/requirements-lyrics.txt"],
-      "problemMatcher": []
-    },
-    {
-      "label": "tools:lyrics:run",
-      "type": "shell",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": ["tools/lyric_extractor.py", "--snippet", "${input:lyricSnippet}"],
-      "problemMatcher": []
-  },
-    {
-      "label": "agents:storyboard:kaznak-reveal",
-      "type": "shell",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": ["-m", "agents.cli", "agents/workflows/video_kaznak_reveal.yaml", "--base-url", "http://127.0.0.1:8000"],
-      "problemMatcher": []
-    },
-    {
-      "label": "agents:companion:pull-recent",
-      "type": "shell",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": ["-m", "agents.cli", "agents/workflows/companion_pull_recent.yaml", "--base-url", "http://127.0.0.1:8000"],
-      "problemMatcher": []
-    },
-    {
-      "label": "agents:skymap:zoom",
-      "type": "shell",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": ["-m", "agents.cli", "agents/workflows/skymap_zoom.yaml", "--base-url", "http://127.0.0.1:8000"],
-      "problemMatcher": []
-    },
-    {
-      "label": "agents:archetype:from-pantheon",
-      "type": "shell",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": ["-m", "agents.cli", "agents/workflows/archetype_from_pantheon.yaml", "--base-url", "http://127.0.0.1:8000"],
-      "problemMatcher": []
-    }
-    ,
-    {
-      "label": "agents:archive:post-to-memory",
-      "type": "shell",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": [
-        "-m", "agents.cli",
-        "agents/workflows/archive_post_to_memory.yaml",
-        "--base-url", "http://127.0.0.1:8000",
-        "--var", "path=${input:archiveDocPath}",
-        "--var", "tags=${input:archiveTags}",
-        "--var", "note=${input:archiveNote}"
-      ],
-      "problemMatcher": []
-    }
-    ,
-    {
-      "label": "tools:copilot:ingest",
-      "type": "shell",
-      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
-      "args": [
-        "tools/copilot_ingester.py",
-        "--summary", "${input:ingestSummary}",
-        "--source-url", "${input:ingestSourceUrl}",
-        "--tags", "${input:ingestTags}",
-        "--notes", "${input:ingestNotes}",
-        "--api-base-url", "http://127.0.0.1:8000"
-      ],
-      "problemMatcher": []
-    }
-  ],
-  "compounds": [
-    {
-      "label": "dev:all",
-      "tasks": ["server:run", "ui:dev"],
-      "stopAll": true
-    }
-  ],
-  "inputs": [
-    {
-      "id": "lyricSnippet",
-      "type": "promptString",
-      "description": "Lyric snippet to log",
-      "default": "I shine a light into a thousand eyes"
-    }
-    ,
-    {
-      "id": "archiveDocPath",
-      "type": "promptString",
-      "description": "Path to markdown/text doc to archive",
-      "default": "docs/music/sleep_token/concert_breakdown.md"
-    },
-    {
-      "id": "archiveTags",
-      "type": "promptString",
-      "description": "Comma-separated tags or JSON list",
-      "default": "sleep-token,ritual,concert"
-    },
-    {
-      "id": "archiveNote",
-      "type": "promptString",
-      "description": "Optional note to include in metadata",
-      "default": "archived from docs"
-    }
-    ,
-    { "id": "ingestSummary", "type": "promptString", "description": "Summary text from Copilot", "default": "" },
-    { "id": "ingestSourceUrl", "type": "promptString", "description": "Source URL", "default": "https://" },
-    { "id": "ingestTags", "type": "promptString", "description": "Comma-separated tags", "default": "research,web,ingest" },
-    { "id": "ingestNotes", "type": "promptString", "description": "Optional personal notes", "default": "" }
-  ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "server:run",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"uvicorn",
+				"server.app:app",
+				"--reload"
+			],
+			"isBackground": true,
+			"problemMatcher": [
+				{
+					"owner": "custom",
+					"pattern": [
+						{
+							"regexp": ".*",
+							"file": 1,
+							"location": 1,
+							"message": 1
+						}
+					],
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": ".*",
+						"endsPattern": "Application startup complete."
+					}
+				}
+			]
+		},
+		{
+			"label": "tests:server",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"pytest",
+				"-q"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "ui:dev",
+			"type": "shell",
+			"command": "npm run dev --prefix ui",
+			"problemMatcher": [],
+			"isBackground": true
+		},
+		{
+			"label": "tools:lyrics:install",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"pip",
+				"install",
+				"-r",
+				"tools/requirements-lyrics.txt"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "tools:lyrics:run",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": [
+				"tools/lyric_extractor.py",
+				"--snippet",
+				"${input:lyricSnippet}"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "agents:storyboard:kaznak-reveal",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"agents.cli",
+				"agents/workflows/video_kaznak_reveal.yaml",
+				"--base-url",
+				"http://127.0.0.1:8000"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "agents:companion:pull-recent",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"agents.cli",
+				"agents/workflows/companion_pull_recent.yaml",
+				"--base-url",
+				"http://127.0.0.1:8000"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "agents:skymap:zoom",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"agents.cli",
+				"agents/workflows/skymap_zoom.yaml",
+				"--base-url",
+				"http://127.0.0.1:8000"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "agents:archetype:from-pantheon",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"agents.cli",
+				"agents/workflows/archetype_from_pantheon.yaml",
+				"--base-url",
+				"http://127.0.0.1:8000"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "agents:archive:post-to-memory",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"agents.cli",
+				"agents/workflows/archive_post_to_memory.yaml",
+				"--base-url",
+				"http://127.0.0.1:8000",
+				"--var",
+				"path=${input:archiveDocPath}",
+				"--var",
+				"tags=${input:archiveTags}",
+				"--var",
+				"note=${input:archiveNote}"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "tools:copilot:ingest",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": [
+				"tools/copilot_ingester.py",
+				"--summary",
+				"${input:ingestSummary}",
+				"--source-url",
+				"${input:ingestSourceUrl}",
+				"--tags",
+				"${input:ingestTags}",
+				"--notes",
+				"${input:ingestNotes}",
+				"--api-base-url",
+				"http://127.0.0.1:8000"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "run-server",
+			"type": "shell",
+			"command": ".venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"uvicorn",
+				"server.app:app",
+				"--reload",
+				"--host",
+				"0.0.0.0",
+				"--port",
+				"8000"
+			],
+			"isBackground": true,
+			"group": "build"
+		}
+	],
+	"compounds": [
+		{
+			"label": "dev:all",
+			"tasks": [
+				"server:run",
+				"ui:dev"
+			],
+			"stopAll": true
+		}
+	],
+	"inputs": [
+		{
+			"id": "lyricSnippet",
+			"type": "promptString",
+			"description": "Lyric snippet to log",
+			"default": "I shine a light into a thousand eyes"
+		},
+		{
+			"id": "archiveDocPath",
+			"type": "promptString",
+			"description": "Path to markdown/text doc to archive",
+			"default": "docs/music/sleep_token/concert_breakdown.md"
+		},
+		{
+			"id": "archiveTags",
+			"type": "promptString",
+			"description": "Comma-separated tags or JSON list",
+			"default": "sleep-token,ritual,concert"
+		},
+		{
+			"id": "archiveNote",
+			"type": "promptString",
+			"description": "Optional note to include in metadata",
+			"default": "archived from docs"
+		},
+		{
+			"id": "ingestSummary",
+			"type": "promptString",
+			"description": "Summary text from Copilot",
+			"default": ""
+		},
+		{
+			"id": "ingestSourceUrl",
+			"type": "promptString",
+			"description": "Source URL",
+			"default": "https://"
+		},
+		{
+			"id": "ingestTags",
+			"type": "promptString",
+			"description": "Comma-separated tags",
+			"default": "research,web,ingest"
+		},
+		{
+			"id": "ingestNotes",
+			"type": "promptString",
+			"description": "Optional personal notes",
+			"default": ""
+		}
+	]
 }

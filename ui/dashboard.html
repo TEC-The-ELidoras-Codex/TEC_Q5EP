@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEC AI Research Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #f0f4f8;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+        
+        .dashboard {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4fd1c7;
+        }
+        
+        .stat-label {
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+        
+        .runs-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .run-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .run-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        
+        .run-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .run-id {
+            font-weight: bold;
+            color: #4fd1c7;
+        }
+        
+        .relevance-score {
+            background: rgba(79,209,199,0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .tag {
+            background: rgba(0,0,0,0.3);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .ai-insights {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .insight-item {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4fd1c7, #38b2ac);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.7;
+        }
+        
+        .error {
+            background: rgba(255,100,100,0.2);
+            border: 1px solid rgba(255,100,100,0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 TEC AI Research Dashboard</h1>
+        <p class="subtitle">AI-Enhanced Evidence Analysis & Insights</p>
+    </div>
+    
+    <div class="dashboard">
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalRuns">-</div>
+                <div class="stat-label">Total Evidence Runs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="aiProcessed">-</div>
+                <div class="stat-label">AI-Analyzed Runs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avgRelevance">-</div>
+                <div class="stat-label">Avg Relevance Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="uniqueTags">-</div>
+                <div class="stat-label">Unique Research Tags</div>
+            </div>
+        </div>
+        
+        <div id="controls">
+            <button class="btn btn-primary" onclick="refreshData()">🔄 Refresh Data</button>
+            <button class="btn btn-secondary" onclick="processUnanalyzed()">🤖 Process Unanalyzed</button>
+            <a href="/runs" class="btn btn-secondary">📊 View Raw Data</a>
+        </div>
+        
+        <div class="runs-grid" id="runsGrid">
+            <div class="loading">Loading evidence runs...</div>
+        </div>
+    </div>
+    
+    <script>
+        let runsData = [];
+        
+        async function loadData() {
+            try {
+                const response = await fetch('/runs');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                runsData = await response.json();
+                updateStats();
+                renderRuns();
+            } catch (error) {
+                document.getElementById('runsGrid').innerHTML = `
+                    <div class="error">
+                        ❌ Failed to load data: ${error.message}
+                        <br><br>
+                        Make sure the TEC API server is running on port 8000
+                    </div>
+                `;
+            }
+        }
+        
+        function updateStats() {
+            const totalRuns = runsData.length;
+            const aiProcessed = runsData.filter(run => run.ai_processed).length;
+            const relevantRuns = runsData.filter(run => run.ai_relevance_score !== undefined);
+            const avgRelevance = relevantRuns.length > 0 
+                ? (relevantRuns.reduce((sum, run) => sum + (run.ai_relevance_score || 0), 0) / relevantRuns.length).toFixed(1)
+                : '0';
+            
+            const allTags = new Set();
+            runsData.forEach(run => {
+                if (run.tags) run.tags.forEach(tag => allTags.add(tag));
+            });
+            
+            document.getElementById('totalRuns').textContent = totalRuns;
+            document.getElementById('aiProcessed').textContent = aiProcessed;
+            document.getElementById('avgRelevance').textContent = avgRelevance;
+            document.getElementById('uniqueTags').textContent = allTags.size;
+        }
+        
+        function renderRuns() {
+            const grid = document.getElementById('runsGrid');
+            
+            if (runsData.length === 0) {
+                grid.innerHTML = '<div class="loading">No evidence runs found</div>';
+                return;
+            }
+            
+            // Sort by relevance score (highest first), then by timestamp
+            const sortedRuns = [...runsData].sort((a, b) => {
+                const scoreA = a.ai_relevance_score || 0;
+                const scoreB = b.ai_relevance_score || 0;
+                if (scoreA !== scoreB) return scoreB - scoreA;
+                return new Date(b.timestamp) - new Date(a.timestamp);
+            });
+            
+            grid.innerHTML = sortedRuns.map(run => `
+                <div class="run-card">
+                    <div class="run-header">
+                        <span class="run-id">Run ${run.id}</span>
+                        <span class="relevance-score">⭐ ${run.ai_relevance_score || 0}/10</span>
+                    </div>
+                    
+                    <p><strong>📅 Submitted:</strong> ${new Date(run.timestamp).toLocaleString()}</p>
+                    <p><strong>📝 Note:</strong> ${run.note_chars > 0 ? `${run.note_chars} characters` : 'No note'}</p>
+                    <p><strong>📸 Photo:</strong> ${run.has_photo ? 'Yes' : 'No'}</p>
+                    
+                    ${run.tags ? `
+                        <div class="tags">
+                            ${run.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    ${run.ai_processed ? `
+                        <div class="ai-insights">
+                            <strong>🤖 AI Insights:</strong>
+                            ${run.ai_analysis && run.ai_analysis.suggested_follow_up_actions ? `
+                                <div style="margin-top: 0.5rem;">
+                                    <strong>🎯 Suggested Actions:</strong>
+                                    <ul style="margin-left: 1rem; opacity: 0.9;">
+                                        ${run.ai_analysis.suggested_follow_up_actions.slice(0, 2).map(action => `<li>${action}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                        </div>
+                    ` : '<div class="ai-insights" style="opacity: 0.6;">⏳ Not yet analyzed by AI</div>'}
+                    
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick="downloadPack('${run.id}')">📦 Download Pack</button>
+                        ${!run.ai_processed ? `<button class="btn btn-secondary" onclick="analyzeRun('${run.id}')">🤖 Analyze</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        async function downloadPack(runId) {
+            window.location.href = `/pack/${runId}`;
+        }
+        
+        async function analyzeRun(runId) {
+            // This would call your AI processor for a specific run
+            alert(`Analyzing run ${runId}... (This would trigger the AI processor)`);
+        }
+        
+        async function processUnanalyzed() {
+            alert('Processing unanalyzed runs... (This would run the bulk AI processor)');
+        }
+        
+        async function refreshData() {
+            document.getElementById('runsGrid').innerHTML = '<div class="loading">Refreshing data...</div>';
+            await loadData();
+        }
+        
+        // Load data on page load
+        loadData();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadData, 30000);
+    </script>
+</body>
+</html>

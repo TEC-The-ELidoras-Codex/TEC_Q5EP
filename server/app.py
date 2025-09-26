@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse, FileResponse
+from fastapi.responses import PlainTextResponse, FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import hashlib, json, time, io, zipfile
 from typing import List
@@ -21,6 +22,34 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get('/dashboard', response_class=HTMLResponse)
+async def dashboard():
+    """Serve the AI Research Dashboard"""
+    dashboard_path = ROOT / 'ui' / 'dashboard.html'
+    if not dashboard_path.exists():
+        raise HTTPException(status_code=404, detail="Dashboard not found")
+    
+    with open(dashboard_path, 'r', encoding='utf-8') as f:
+        return HTMLResponse(content=f.read())
+
+@app.get('/')
+async def root():
+    """Redirect root to dashboard"""
+    return HTMLResponse(content="""
+        <html>
+            <head><title>TEC_Q5EP</title></head>
+            <body>
+                <h1>🤖 TEC_Q5EP Evidence API</h1>
+                <p>AI-enhanced evidence collection and analysis system</p>
+                <ul>
+                    <li><a href="/dashboard">📊 AI Research Dashboard</a></li>
+                    <li><a href="/runs">📋 Evidence Runs (JSON)</a></li>
+                    <li><a href="/docs">📖 API Documentation</a></li>
+                </ul>
+            </body>
+        </html>
+    """)
 
 def sha256_bytes(b: bytes) -> str:
     h = hashlib.sha256(); h.update(b); return h.hexdigest()
@@ -86,7 +115,23 @@ def list_runs():
             meta = SubmissionMeta.model_validate_json((d / 'metadata.json').read_text(encoding='utf-8'))
             has_photo = (d / 'photo.jpg').exists()
             note_chars = len((d / 'note.txt').read_text(encoding='utf-8')) if (d / 'note.txt').exists() else 0
-            items.append(RunSummary(id=meta.id, timestamp=meta.timestamp, tags=meta.tags, has_photo=has_photo, note_chars=note_chars))
+            
+            # Extract AI analysis data from metadata
+            metadata_dict = json.loads((d / 'metadata.json').read_text(encoding='utf-8'))
+            ai_processed = metadata_dict.get('ai_processed', False)
+            ai_relevance_score = metadata_dict.get('ai_relevance_score')
+            ai_analysis = metadata_dict.get('ai_analysis')
+            
+            items.append(RunSummary(
+                id=meta.id, 
+                timestamp=meta.timestamp, 
+                tags=meta.tags, 
+                has_photo=has_photo, 
+                note_chars=note_chars,
+                ai_processed=ai_processed,
+                ai_relevance_score=ai_relevance_score,
+                ai_analysis=ai_analysis
+            ))
     return items
 
 

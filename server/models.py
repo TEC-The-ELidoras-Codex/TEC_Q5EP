@@ -33,6 +33,10 @@ class RunSummary(BaseModel):
     tags: List[str] = Field(default_factory=list)
     has_photo: bool = False
     note_chars: int = 0
+    # AI Analysis fields
+    ai_processed: bool = False
+    ai_relevance_score: Optional[int] = None
+    ai_analysis: Optional[Dict[str, Any]] = None
 
 
 # Memory models

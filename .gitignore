@@ -7,6 +7,9 @@ data/incoming/
 data/runs/
 data/evidence_packs/
 .env
+.env.*
+!.env.example
+!.env.template
 ParentAgent/
 alchemical_formulas/
 data/dump/

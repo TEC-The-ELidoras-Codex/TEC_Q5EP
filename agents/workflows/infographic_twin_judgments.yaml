@@ -7,11 +7,30 @@ steps:
     inputs:
       out_path: data/agents/infographics/${scratch.run_id}/twin_judgments_prompt.md
       content: ${scratch.prompt_text}
+  - tool: copy_file
+    inputs:
+      src: docs/infographics/twin_judgments_wireframe.svg
+      dest: data/agents/infographics/${scratch.run_id}/twin_judgments_wireframe.svg
+  - tool: save_json
+    inputs:
+      out_path: data/agents/infographics/${scratch.run_id}/twin_judgments_manifest.json
+      data:
+        title: "The Twin Judgments — Infographic Canon Pack"
+        version: "1.1"
+        status: "canon"
+        generated_at: ${scratch.run_id}
+        source_prompt: docs/infographics/The_Twin_Judgments_prompt.md
+        exported_prompt: data/agents/infographics/${scratch.run_id}/twin_judgments_prompt.md
+        wireframe: data/agents/infographics/${scratch.run_id}/twin_judgments_wireframe.svg
+        notes: "Saved via infographic_twin_judgments workflow"
   - tool: memory_add
     inputs:
       item:
         user_id: kaznakalpha
-        tags: ["infographic", "twin-judgments", "prompt-pack"]
-        content: Saved Twin Judgments prompt pack for rendering
+        tags: ["infographic", "twin-judgments", "prompt-pack", "canon"]
+        content: Saved Twin Judgments canonical pack (prompt, wireframe, manifest) for rendering
         metadata:
-          path: data/agents/infographics/${scratch.run_id}/twin_judgments_prompt.md
+          prompt_path: data/agents/infographics/${scratch.run_id}/twin_judgments_prompt.md
+          wireframe_path: data/agents/infographics/${scratch.run_id}/twin_judgments_wireframe.svg
+          manifest_path: data/agents/infographics/${scratch.run_id}/twin_judgments_manifest.json
+          version: "1.1"

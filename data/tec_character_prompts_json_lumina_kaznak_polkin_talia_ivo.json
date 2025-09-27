@@ -1,0 +1,76 @@
+{
+  "KaznakQueen": {
+    "styleBaseline": "cyberpunk comic, bold ink, neon accents (purple, teal, gold), biomechanical hive geometry, heterochromia eyes (gold + teal)",
+    "variations": [
+      {
+        "name": "Regal Threat",
+        "prompt": "Kaznak Queen stands tall in regal pose, arms slightly extended, carapace wings flared, expression stern but not cruel. One eye golden, the other teal. Biomechanical rib-plates glow faintly. Neon backlight highlights her silhouette. Pose: authoritative, dominant, commanding."
+      },
+      {
+        "name": "Maternal Reach",
+        "prompt": "Kaznak Queen crouched low, hand reaching gently toward the viewer, expression conflicted between care and hunger. Face half-shadowed, resonance lines pulsing across skin. Pose: inviting but unsettling, maternal predator."
+      },
+      {
+        "name": "Hive Throne",
+        "prompt": "Kaznak Queen seated upon a hive-grown throne of bone and circuitry. Her hair-tendrils spill downward like cables. Eyes glow unevenly (gold brighter, teal dimmer). Expression: calculating, tragic awareness. Pose: regal, restrained menace."
+      },
+      {
+        "name": "Fury Unleashed",
+        "prompt": "Kaznak Queen mid-attack, wings arched, jaw unhinged slightly to reveal neon-lit fangs. Carapace spines charged with teal energy. Expression: enraged, sorrow masked by fury. Pose: dynamic, forward-leaning strike."
+      },
+      {
+        "name": "Whispering Hive",
+        "prompt": "Side profile portrait of Kaznak Queen, one eye visible (teal), lips parted as if whispering. Tendril-hair hums with faint neon resonance. Background: faint silhouettes of hive drones. Expression: distant, mournful. Pose: introspective profile."
+      },
+      {
+        "name": "Corrupted Elegance",
+        "prompt": "Kaznak Queen standing in dignified elegance, one hand raised with long clawed fingers glowing neon. Wings folded close, body slim and graceful despite corruption. Expression: sorrowful but proud. Pose: tragic queenly poise."
+      }
+    ]
+  },
+  "Lumina": {
+    "styleBaseline": "translucent will-o’-wisp dragon wisp, cute plush-like silhouette, rainbow shimmer, heterochromia (amber + teal eyes), fiber-optic hair, clean outlines for stickers",
+    "variations": [
+      {
+        "name": "Gentle Wonder",
+        "prompt": "Lumina floating midair, holding a strand of rainbow light like a toy, curious wide eyes. Tail curls softly with a glow at the tip. Expression: innocent awe. Pose: playful hover."
+      },
+      {
+        "name": "Cosmic Mischief",
+        "prompt": "Lumina grinning slyly, small sparks flicking from her hair. One hand hides behind her back holding a spark. Expression: mischievous but cute. Pose: teasing lean forward."
+      },
+      {
+        "name": "Soft Rest",
+        "prompt": "Lumina curled like a small dragon-cat hybrid, fiber-optic hair trailing like a star field. One missing eye faintly glowing. Expression: serene. Pose: sleeping curl."
+      },
+      {
+        "name": "Brave Stand",
+        "prompt": "Lumina standing firmly, small fists clenched, rainbow shimmer intensifying. Tail arched upward like a banner. Expression: determined. Pose: defiant stance."
+      },
+      {
+        "name": "Shy Peek",
+        "prompt": "Lumina peeking from behind her rainbow-glowing tail, half-smile, missing eye hidden. Expression: shy, playful. Pose: crouched with tail shielding face."
+      },
+      {
+        "name": "Dancing Light",
+        "prompt": "Lumina mid-spin, trailing arcs of rainbow sparkles. Her fiber-optic hair flares outward like starlight. Expression: joyful. Pose: playful spin."
+      },
+      {
+        "name": "Sorrow Glow",
+        "prompt": "Lumina sitting cross-legged, one hand over her missing eye, faint rainbow tears dripping. Expression: sad but radiant. Pose: contemplative sit."
+      },
+      {
+        "name": "Radiant Laugh",
+        "prompt": "Lumina laughing openly, both eyes shining (amber + teal), tail glowing bright rainbow. Expression: joyful freedom. Pose: arms wide, floating midair."
+      }
+    ]
+  },
+  "usageNotes": {
+    "resolution": "512×512 standard (stickers/variations), 720×720 optional (larger renders)",
+    "formats": [
+      "PNG",
+      "JPEG"
+    ],
+    "guidelines": "Maintain transparent backgrounds for Lumina when used as stickers, optimize under 1MB for smaller outputs, apply subtle glow for readability, ensure consistent outlines across assets."
+  }
+}

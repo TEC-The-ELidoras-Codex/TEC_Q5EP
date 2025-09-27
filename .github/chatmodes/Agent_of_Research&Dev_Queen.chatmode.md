@@ -1,3 +1,4 @@
+---
 description: 'TEC Research & Development Queen — Azure-connected evidence synthesis agent.'
 tools:
   - azure-copilot

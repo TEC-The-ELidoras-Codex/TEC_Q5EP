@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug API (uvicorn)",
+  "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}\\.venv\\Scripts\\uvicorn.exe",
+      "args": [
+        "server.app:app",
+        "--reload",
+        "--port",
+        "8000"
+      ],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}\\.env"
+    }
+  ]
+}

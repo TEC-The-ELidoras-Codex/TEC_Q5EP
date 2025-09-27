@@ -2,6 +2,50 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "py: setup venv",
+			"type": "shell",
+			"command": "if (!(Test-Path .venv)) { py -3.12 -m venv .venv }; .\\.venv\\Scripts\\pip.exe install -U pip; .\\.venv\\Scripts\\pip.exe install -r requirements.txt",
+			"problemMatcher": []
+		},
+		{
+			"label": "api: start (uvicorn)",
+			"type": "shell",
+			"command": ".\\.venv\\Scripts\\python.exe -m uvicorn server.app:app --reload --host 0.0.0.0 --port 8000",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "custom",
+				"fileLocation": [
+					"relative",
+					"${workspaceFolder}"
+				],
+				"pattern": [
+					{
+						"regexp": ".*",
+						"file": 1,
+						"location": 2,
+						"message": 0
+					}
+				],
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": ".*Reloading.*|.*Started server process.*",
+					"endsPattern": ".*Application startup complete.*"
+				}
+			}
+		},
+		{
+			"label": "tests: pytest",
+			"type": "shell",
+			"command": ".\\.venv\\Scripts\\python.exe -m pytest -q",
+			"problemMatcher": []
+		},
+		{
+			"label": "agent: build zip",
+			"type": "shell",
+			"command": ".\\.venv\\Scripts\\python.exe tools\\package_agent_manifest.py",
+			"problemMatcher": []
+		},
+		{
 			"label": "server:run",
 			"type": "shell",
 			"command": "${workspaceFolder}/.venv/Scripts/python.exe",

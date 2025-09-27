@@ -5,9 +5,11 @@
     "node_modules": true
   },
   "editor.formatOnSave": true,
-  "python.defaultInterpreterPath": ".venv/Scripts/python.exe",
+  "files.eol": "\n",
+  "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
   "python.analysis.typeCheckingMode": "basic",
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "git.confirmSync": false,
-  "git.enableSmartCommit": true
+  "git.enableSmartCommit": true,
+  "chat.mcp.serverSampling": {}
 }

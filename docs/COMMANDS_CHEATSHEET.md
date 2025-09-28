@@ -78,7 +78,7 @@ Invoke-WebRequest -OutFile data/evidence_packs/<id>_bundle.zip "http://127.0.0.1
 .\.venv\Scripts\python.exe analysis\export_csv.py
 
 # rebuild custom agent manifest zip for Microsoft 365 upload
-\.\.venv\Scripts\python.exe tools\package_agent_manifest.py
+.\.venv\Scripts\python.exe tools\package_agent_manifest.py
 ```
 
 ## Housekeeping

@@ -1,18 +1,14 @@
 from __future__ import annotations
 
 import json
-import math
+import wave
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 try:
     import librosa  # type: ignore
-    import numpy as np  # type: ignore
-except Exception:  # pragma: no cover - optional dependency
+except (ImportError, ModuleNotFoundError):  # pragma: no cover - optional dependency
     librosa = None  # type: ignore
-    np = None  # type: ignore
-
-import wave
 
 
 def _load_manifest(inputs: Dict[str, Any]) -> Dict[str, Any]:
@@ -49,16 +45,21 @@ def _analyze_with_librosa(path: Path) -> Dict[str, Any]:
 
 
 def _analyze_with_wave(path: Path) -> Dict[str, Any]:
-    with wave.open(str(path), "rb") as wf:
-        frames = wf.getnframes()
-        frame_rate = wf.getframerate()
-        duration = frames / float(frame_rate) if frame_rate else 0.0
-        return {
-            "duration_seconds": round(duration, 2),
-            "sample_rate": frame_rate,
-            "channels": wf.getnchannels(),
-            "sample_width": wf.getsampwidth(),
-        }
+    try:
+        with wave.open(str(path), "rb") as wf:
+            frames = wf.getnframes()
+            frame_rate = wf.getframerate()
+            duration = frames / float(frame_rate) if frame_rate else 0.0
+            return {
+                "duration_seconds": round(duration, 2),
+                "sample_rate": frame_rate,
+                "channels": wf.getnchannels(),
+                "sample_width": wf.getsampwidth(),
+            }
+    except wave.Error as exc:  # pragma: no cover - limited to invalid WAV headers
+        raise ValueError(
+            "Wave backend can only analyze PCM WAV assets; install librosa for broader format support."
+        ) from exc
 
 
 def _tempo_label(tempo: Optional[float]) -> Optional[str]:
@@ -91,13 +92,24 @@ def analyze_audio(inputs: Dict[str, Any]) -> Dict[str, Any]:
 
     metrics: Dict[str, Any]
     analysis_source = "librosa"
+    can_use_wave = path.suffix.lower() in {".wav", ".wave"}
     if librosa is not None:
         try:
             metrics = _analyze_with_librosa(path)
-        except Exception:
+        except Exception as exc:  # pragma: no cover - depends on optional dependency setup
+            if not can_use_wave:
+                raise ValueError(
+                    "Audio analysis without librosa is limited to PCM WAV assets; install the media extras or "
+                    "provide a .wav file."
+                ) from exc
             metrics = _analyze_with_wave(path)
             analysis_source = "wave"
     else:
+        if not can_use_wave:
+            raise ValueError(
+                "Audio analysis without librosa is limited to PCM WAV assets; install the media extras or "
+                "provide a .wav file."
+            )
         metrics = _analyze_with_wave(path)
         analysis_source = "wave"
 

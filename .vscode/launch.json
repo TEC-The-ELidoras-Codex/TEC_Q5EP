@@ -3,9 +3,9 @@
   "configurations": [
     {
       "name": "Debug API (uvicorn)",
-  "type": "debugpy",
+      "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}\\.venv\\Scripts\\uvicorn.exe",
+      "module": "uvicorn",
       "args": [
         "server.app:app",
         "--reload",
@@ -14,6 +14,42 @@
       ],
       "cwd": "${workspaceFolder}",
       "envFile": "${workspaceFolder}\\.env"
+    },
+    {
+      "name": "Debug Agent CLI",
+      "type": "python",
+      "request": "launch",
+      "module": "agents.cli",
+      "args": [
+        "agents/workflows/media_companion_agent.yaml",
+        "--base-url",
+        "http://127.0.0.1:8000"
+      ],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}\\.env",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug Tests",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "-v",
+        "server/tests/"
+      ],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}\\.env",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug Airth Research Guard",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/agents/airth_research_guard.py",
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}\\.env",
+      "console": "integratedTerminal"
     }
   ]
 }

@@ -122,7 +122,7 @@ Debug the API with F5.
       "name": "Debug API (uvicorn)",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}\\.venv\\Scripts\\uvicorn.exe",
+      "module": "uvicorn",
       "args": ["server.app:app", "--reload", "--port", "8000"],
       "cwd": "${workspaceFolder}",
       "envFile": "${workspaceFolder}\\.env"

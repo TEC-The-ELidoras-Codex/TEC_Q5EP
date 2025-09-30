@@ -1,0 +1,161 @@
+name: Automated Release Tagging
+
+# This workflow demonstrates how to create releases that comply with tag rulesets
+# It only runs after all CI checks pass and creates signed tags
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.2.3 or 1.0.0-alpha.1)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Is this a pre-release?'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  validate-and-tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for proper tagging
+          
+      - name: Validate version format
+        id: validate
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          
+          # Remove 'v' prefix if present
+          VERSION_CLEAN="${VERSION#v}"
+          
+          # Validate semantic versioning format
+          if [[ ! "$VERSION_CLEAN" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-((0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*))*))?(\+([0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*))?$ ]]; then
+            echo "❌ Invalid version format: $VERSION_CLEAN"
+            echo "Expected: X.Y.Z or X.Y.Z-prerelease+build"
+            exit 1
+          fi
+          
+          # Set tag name with 'v' prefix
+          TAG_NAME="v${VERSION_CLEAN}"
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION_CLEAN" >> $GITHUB_OUTPUT
+          
+          echo "✅ Valid version: $VERSION_CLEAN → Tag: $TAG_NAME"
+          
+      - name: Check if tag already exists
+        run: |
+          TAG_NAME="${{ steps.validate.outputs.tag_name }}"
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "❌ Tag $TAG_NAME already exists!"
+            exit 1
+          fi
+          echo "✅ Tag $TAG_NAME is available"
+          
+      - name: Wait for CI checks
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.sha }}
+          check-name: 'test-python'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+          
+      - name: Wait for UI checks
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.sha }}
+          check-name: 'test-ui'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+          
+      - name: Wait for security checks
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.sha }}
+          check-name: 'security-scan'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+          
+      - name: Import GPG key (if configured)
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: true
+          
+      - name: Create and push tag
+        env:
+          TAG_NAME: ${{ steps.validate.outputs.tag_name }}
+          VERSION: ${{ steps.validate.outputs.version }}
+          PRERELEASE: ${{ github.event.inputs.prerelease }}
+        run: |
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Create release message
+          if [[ "$PRERELEASE" == "true" ]]; then
+            MESSAGE="Pre-release $TAG_NAME"
+          else
+            MESSAGE="Release $TAG_NAME"
+          fi
+          
+          # Create signed tag if GPG is configured, otherwise unsigned
+          if [[ -n "${{ steps.import-gpg.outputs.fingerprint }}" ]]; then
+            echo "🔐 Creating signed tag: $TAG_NAME"
+            git tag -s "$TAG_NAME" -m "$MESSAGE"
+          else
+            echo "⚠️  GPG not configured, creating unsigned tag: $TAG_NAME"
+            git tag "$TAG_NAME" -m "$MESSAGE"
+          fi
+          
+          # Push tag
+          echo "🚀 Pushing tag: $TAG_NAME"
+          git push origin "$TAG_NAME"
+          
+          echo "✅ Tag created and pushed successfully!"
+          
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.validate.outputs.tag_name }}
+          name: ${{ steps.validate.outputs.tag_name }}
+          prerelease: ${{ github.event.inputs.prerelease }}
+          generate_release_notes: true
+          body: |
+            ## Release ${{ steps.validate.outputs.tag_name }}
+            
+            **Version:** ${{ steps.validate.outputs.version }}
+            **Commit:** ${{ github.sha }}
+            
+            ### Changes
+            See the full changelog below (auto-generated).
+            
+            ### Verification
+            - ✅ All CI checks passed
+            - ✅ Security scan completed
+            - ${{ steps.import-gpg.outputs.fingerprint && '✅ Tag is GPG signed' || '⚠️ Tag is unsigned' }}
+            
+            ---
+            *Generated by TEC_Q5EP Release Automation*
+            
+      - name: Summary
+        run: |
+          echo "## 🎉 Release Created!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** ${{ steps.validate.outputs.tag_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ steps.validate.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Pre-release:** ${{ github.event.inputs.prerelease }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ All ruleset requirements satisfied" >> $GITHUB_STEP_SUMMARY

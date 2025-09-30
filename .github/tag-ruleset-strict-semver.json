@@ -1,0 +1,96 @@
+{
+  "name": "release-protection-strict-semver",
+  "target": "tag",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": [
+        "refs/tags/v*"
+      ],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "creation",
+      "parameters": {
+        "restricted": true
+      }
+    },
+    {
+      "type": "update",
+      "parameters": {
+        "restricted": true,
+        "update_allows_fetch_and_merge": false
+      }
+    },
+    {
+      "type": "deletion",
+      "parameters": {
+        "restricted": true
+      }
+    },
+    {
+      "type": "required_signatures",
+      "parameters": {}
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "required_status_checks": [
+          {
+            "context": "test-python",
+            "integration_id": null
+          },
+          {
+            "context": "test-ui",
+            "integration_id": null
+          },
+          {
+            "context": "security-scan",
+            "integration_id": null
+          }
+        ],
+        "strict_required_status_checks_policy": true
+      }
+    },
+    {
+      "type": "non_fast_forward",
+      "parameters": {}
+    },
+    {
+      "type": "tag_name_pattern",
+      "parameters": {
+        "operator": "regex_match",
+        "pattern": "^v(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+        "negate": false,
+        "name": "Semantic Versioning 2.0.0"
+      }
+    },
+    {
+      "type": "commit_message_pattern",
+      "parameters": {
+        "operator": "regex_match",
+        "pattern": "^(feat|fix|docs|chore|refactor|test|ci|perf|build|revert)(\\(.+\\))?: .+$",
+        "negate": false,
+        "name": "Conventional Commits"
+      }
+    },
+    {
+      "type": "commit_author_email_pattern",
+      "parameters": {
+        "operator": "regex_match",
+        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+        "negate": false,
+        "name": "Valid email format"
+      }
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": null,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    }
+  ]
+}

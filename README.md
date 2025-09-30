@@ -107,5 +107,24 @@ Integrating new model backends (e.g., Runway, Blender).
 
 Please respect the project's core philosophy. All contributions must be constructive and aligned with the mission.
 
+## 🏷️ Releases & Versioning
+
+This project follows [Semantic Versioning 2.0.0](https://semver.org/). Release tags are protected by GitHub rulesets to ensure:
+
+- All CI/CD checks pass before tagging
+- Tags follow semantic versioning format (`vX.Y.Z`)
+- Release history is immutable and auditable
+
+**Creating a Release:**
+```bash
+# Ensure all tests pass, then create a signed tag
+git tag -s v1.2.0 -m "Release v1.2.0: New features"
+git push origin v1.2.0
+```
+
+For detailed release procedures, GPG signing setup, and troubleshooting, see:
+- 📖 [Release Process Guide](docs/RELEASE_PROCESS.md)
+- 🛡️ [Tag Ruleset Documentation](.github/TAG_RULESET_README.md)
+
 📝 License
 This repository is licensed under the terms specified in the LICENSE file.
